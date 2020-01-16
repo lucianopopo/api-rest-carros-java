@@ -36,7 +36,7 @@ You need:
 
 ## Tutorial
 
-For a quick introduction refer to the [tutorial](https://restheart.org/docs/tutorial/) on the RESTHeart Platform documentation.
+There is no documentation for while.
 
 ## How to Build
 
