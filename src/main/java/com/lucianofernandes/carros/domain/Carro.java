@@ -11,6 +11,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import io.swagger.annotations.ApiModel;
+
+
+@ApiModel(description = "{carro.model}")
 @Entity
 @Table(name = "carro_tb")
 public class Carro {

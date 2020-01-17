@@ -7,6 +7,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import io.swagger.annotations.ApiModel;
+
+@ApiModel(description = "{marca.model}")
 @Entity
 @Table(name = "marca_tb")
 public class Marca {
@@ -21,4 +24,30 @@ public class Marca {
 	
 	@Column(name = "logo")
 	private String logo;
+
+	public Integer getMarcaId() {
+		return marcaId;
+	}
+
+	public String getNomeMarca() {
+		return nomeMarca;
+	}
+
+	public String getLogo() {
+		return logo;
+	}
+
+	public void setMarcaId(Integer marcaId) {
+		this.marcaId = marcaId;
+	}
+
+	public void setNomeMarca(String nomeMarca) {
+		this.nomeMarca = nomeMarca;
+	}
+
+	public void setLogo(String logo) {
+		this.logo = logo;
+	}
+	
+	
 }
