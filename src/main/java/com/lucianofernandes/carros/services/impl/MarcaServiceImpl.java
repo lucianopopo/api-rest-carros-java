@@ -1,43 +1,97 @@
 package com.lucianofernandes.carros.services.impl;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
+import com.lucianofernandes.carros.domain.Carro;
 import com.lucianofernandes.carros.domain.Marca;
+import com.lucianofernandes.carros.exceptions.BusinessException;
+import com.lucianofernandes.carros.exceptions.RecursoNaoEncontradoException;
+import com.lucianofernandes.carros.repository.CarroRepository;
+import com.lucianofernandes.carros.repository.MarcaRepository;
 import com.lucianofernandes.carros.services.MarcaService;
+import com.lucianofernandes.carros.utils.CollectionUtils;
+
 
 @PropertySource("classpath:ValidationMessages.properties")
 @Service
 public class MarcaServiceImpl implements MarcaService {
+	
+	@Autowired
+	private MarcaRepository marcaRepository;
+	
+	@Autowired
+	private CarroRepository carroRepository;
+	
+	@Value("${marca.nao.encontrada}")
+	private String msgErroMarcaInexistente;
+	
+	@Value("${marca.nome.marca.vazio}")
+	private String msgErroNomeMarcaVazio;
+	
+	@Value("${marca.logomarca.vazio}")
+	private String msgErroLogotipoVazio;
+	
+	@Value("${marca.deletar.com.carros}")
+	private String msgErroDeletarComCarros;
 
 	@Override
 	public Marca buscarPorId(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		return marcaRepository.findById(id)
+				.orElseThrow(() -> new RecursoNaoEncontradoException(msgErroMarcaInexistente));
 	}
 
 	@Override
 	public Marca salvarMarca(Marca marca) {
-		// TODO Auto-generated method stub
-		return null;
+		validarMarca(marca);
+		return marcaRepository.save(marca);
+	}
+
+	private void validarMarca(Marca marca) {
+		
+		if(marca.getNomeMarca().isEmpty()) {
+			throw new BusinessException(msgErroNomeMarcaVazio);
+		}
+		if(marca.getLogo().isEmpty()) {
+			throw new BusinessException(msgErroLogotipoVazio);
+		}
+
 	}
 
 	@Override
-	public Marca atualizarMarca(Integer id, Marca marca) {
-		// TODO Auto-generated method stub
-		return null;
+	public Marca atualizarMarca(Integer id, Marca marcaAtualizada) {
+		Marca marcaEncontrada = buscarPorId(id);
+		marcaEncontrada.setNomeMarca(marcaAtualizada.getNomeMarca());
+		marcaEncontrada.setLogo(marcaAtualizada.getLogo());
+		validarMarca(marcaEncontrada);
+		return marcaRepository.save(marcaEncontrada);
 	}
 
 	@Override
 	public Marca buscarPorNome(String nomeMarca) {
-		// TODO Auto-generated method stub
-		return null;
+		return marcaRepository.findByNomeMarca(nomeMarca)
+				.orElseThrow(() -> new RecursoNaoEncontradoException(msgErroMarcaInexistente));
 	}
 
 	@Override
-	public void deletar(Integer id) {
-		// TODO Auto-generated method stub
+	public Boolean deletar(Integer id) {
+		Marca marcaEncontrada = buscarPorId(id);
+		List<Carro> carrosDaMarca = carroRepository.findAllByNomeMarca(marcaEncontrada.getNomeMarca());
+		if(carrosDaMarca.isEmpty()) {
+			marcaRepository.delete(marcaEncontrada);
+		} else {
+			throw new BusinessException(msgErroDeletarComCarros);
+		}
+		return true;
+	}
 
+	@Override
+	public List<Marca> buscarTodos() {
+		return CollectionUtils.getListFromIterable(marcaRepository.findAll());
 	}
 
 }
