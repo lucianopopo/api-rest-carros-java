@@ -30,12 +30,6 @@ public class MarcaServiceImpl implements MarcaService {
 	@Value("${marca.nao.encontrada}")
 	private String msgErroMarcaInexistente;
 	
-	@Value("${marca.nome.marca.vazio}")
-	private String msgErroNomeMarcaVazio;
-	
-	@Value("${marca.logomarca.vazio}")
-	private String msgErroLogotipoVazio;
-	
 	@Value("${marca.deletar.com.carros}")
 	private String msgErroDeletarComCarros;
 
@@ -47,27 +41,15 @@ public class MarcaServiceImpl implements MarcaService {
 
 	@Override
 	public Marca salvarMarca(Marca marca) {
-		validarMarca(marca);
 		return marcaRepository.save(marca);
 	}
 
-	private void validarMarca(Marca marca) {
-		
-		if(marca.getNomeMarca().isEmpty()) {
-			throw new BusinessException(msgErroNomeMarcaVazio);
-		}
-		if(marca.getLogo().isEmpty()) {
-			throw new BusinessException(msgErroLogotipoVazio);
-		}
-
-	}
 
 	@Override
 	public Marca atualizarMarca(Integer id, Marca marcaAtualizada) {
 		Marca marcaEncontrada = buscarPorId(id);
 		marcaEncontrada.setNomeMarca(marcaAtualizada.getNomeMarca());
 		marcaEncontrada.setLogo(marcaAtualizada.getLogo());
-		validarMarca(marcaEncontrada);
 		return marcaRepository.save(marcaEncontrada);
 	}
 
