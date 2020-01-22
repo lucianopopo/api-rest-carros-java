@@ -14,12 +14,6 @@
 - [How to Build](#how-to-Build)
 - [Book a chat](#book-a-chat)
 
-<p align="center">
-   <a href="https://restheart.org">
-       <img src="http://ukbsistemas.com.br/lucianopopo/java/api/images/restcarros-what-is-it.svg" width="800px" height="auto" class="image-center img-responsive" />
-   </a>
-</p>
-
 ## Summary
 
 API REST Carros is a REST API Microservice in Java, SpringBoot with SQLServer
@@ -50,7 +44,7 @@ $ mvn clean package
 
 ## Book a chat
 
-If you have any question about API REST Carros and want to talk directly with me, you can send an email to [lucianopopo@gmail.com](lucianopopo@gmail.com) and ask anything.
+If you have any question about API REST Carros and want to talk directly with me, you can send an email to [lucianopopo@gmail.com](mailto:lucianopopo@gmail.com) and ask anything.
 
 <hr></hr>
 
